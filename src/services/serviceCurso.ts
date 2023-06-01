@@ -1,15 +1,24 @@
-import Curso from "../databases/models/curso"
 import { AppDataSource } from "../databases/connections/data-source"
+import Curso from "../databases/models/curso"
+
+// 1) Estabelece conexão com a tabela alvo no banco de dados através de um cursor
 
 const cursor = AppDataSource.getRepository(Curso)
 
-// Captura os dados vindos do frontend via requisição
+// 2) Recebe dados da Requisição HTTP lá do FRONTEND
+
 type newCursoRequest = {
   descricao_curso: string
   carga_horaria_curso: number
   modalidade: string
   eixo: string
 }
+
+type findOneCursoRequest = {
+  id_curso: string
+}
+
+// 3) Classes CRUD
 
 export class CreateCursoService {
   // passa os dados da requisição como parametro do método "execute()"
@@ -42,10 +51,44 @@ export class CreateCursoService {
   }
 }
 
-export class ReadAllCursoService {}
+export class ReadAllCursoService {
+  async execute() {
+    // Executa a consulta "SELECT * FROM curso" no BD
+    // Armazena todos os registros do Result Set na variável "cursos"
+    // Neste caso, esta variável é uma lista de cursos
+    const cursos = await cursor.find()
+    return cursos
+  }
+}
 
-export class ReadOneCursoService {}
+export class ReadOneCursoService {
+  // Recebe o ID do curso como parâmetro da Requisição do usuário
+  async execute({ id_curso }: findOneCursoRequest) {
+    // Vê se o curso existe na tabela no BD - SELECT * FROM curso WHERE id_curso = ??
+    const curso = await cursor.findOne({ where: { id_curso } })
+    // Se o curso não for encontrado no Result Set retorna um erro para o usuário
+    if (!curso) {
+      return new Error("Curso não encontrado!")
+    }
+    // Se o curso for encontrado retorna para o usuário o curso
+    return curso
+  }
+}
 
 export class UpdateCursoService {}
 
-export class DeleteCursoService {}
+export class DeleteCursoService {
+  // Recebe o ID do curso como parâmetro da Requisição do usuário
+  async execute({ id_curso }: findOneCursoRequest) {
+    // Vê se o curso existe na tabela no BD - SELECT * FROM curso WHERE id_curso = ??
+    const curso = await cursor.findOne({ where: { id_curso } })
+    // Se o curso não for encontrado no Result Set retorna um erro para o usuário
+    if (!curso) {
+      return new Error("Curso não encontrado!")
+    }
+    // Se o curso for encontrado, deleta do BD - DELETE FROM curso WHERE id_curso = ??
+    await cursor.delete(curso)
+    // Retorna para o usuário o curso que foi deletado
+    return curso
+  }
+}

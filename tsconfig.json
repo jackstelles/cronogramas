@@ -11,14 +11,17 @@
     "noImplicitAny": false,
     "outDir": "build",
     "rootDir": "src",
-    "paths":{
-      "@controllers":["./src/controllers/*"],
-      "@connections":["./src/databases/connections/*"],
-      "@models":["./src/databases/models/*"],
-      "@routes":["./src/routes/*"],
-      "@services":["./src/services/*"]
-    }
+    // "baseUrl": "./",
+    // "paths": {
+    //   //   "@controllers": ["controllers/*"],
+    //   //   "@connections": ["databases/connections"],
+    //   "@models": ["./src/databases/models/*"]
+    //   //   "@databases": ["databases/*"],
+    //   //   "@routes": ["routes/*"],
+    //   //   "@services": ["services/*"]
+    // }
   },
   "compileOnSave": true,
-  "include": ["src"]
+  "include": ["./src/**/*.ts", "src/index.ts"],
+  "exclude": ["node_modules"]
 }
