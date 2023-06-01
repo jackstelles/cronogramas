@@ -2,7 +2,7 @@ import { Entity, PrimaryColumn, Column } from "typeorm"
 import { v4 as uuid } from "uuid"
 
 @Entity("turma")
-export default class turma {
+export default class Turma {
   //Chave Primaria
   @PrimaryColumn()
   id_turma: string

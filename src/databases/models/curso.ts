@@ -2,7 +2,7 @@ import { Entity, PrimaryColumn, Column } from "typeorm"
 import { v4 as uuid } from "uuid"
 
 @Entity("curso")
-export default class curso {
+export default class Curso {
   //chave primária
   @PrimaryColumn()
   id_curso: string
